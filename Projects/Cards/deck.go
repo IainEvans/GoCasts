@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"hash/fnv"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -64,4 +65,10 @@ func (d deck) suffle() {
 
 		d[i], d[newPosition] = d[newPosition], d[i]
 	}
+}
+
+func hash(s string) uint32 {
+	h := fnv.New32a()
+	h.Write([]byte(s))
+	return h.Sum32()
 }
