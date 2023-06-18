@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestNewDeck(t *testing.T) {
 	d := newDeck()
@@ -21,4 +24,23 @@ func TestNewDeck(t *testing.T) {
 		t.Errorf("Checksum does not match expected checksum 1158489354")
 	}
 
+}
+
+func TestSaveToDeckAndNewDeckFromFile(t *testing.T) {
+	os.Remove("_decktesting")
+
+	d := newDeck()
+	d.saveToFile("_decktesting")
+
+	loadedDeck := newDeckFromFile("_decktesting")
+
+	if len(loadedDeck) != 52 {
+		t.Errorf("Expected deck length of 52, but got %v", len(d))
+	}
+
+	if hash(loadedDeck.toString()) != 1158489354 {
+		t.Errorf("Checksum does not match expected checksum 1158489354")
+	}
+
+	os.Remove("_decktesting")
 }
